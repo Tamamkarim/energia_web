@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,13 +8,15 @@ import {
   BarElement,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcElement);
 
 function Dashboard() {
   const [records, setRecords] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
   const [form, setForm] = useState({
     consumption: "",
     date: "",
@@ -143,6 +146,9 @@ function Dashboard() {
     (a, b) => new Date(b.date) - new Date(a.date)
   );
 
+
+
+  // Sample data for peak/off-peak usage
   const totalConsumption = records.reduce(
     (sum, item) => sum + Number(item.consumption),
     0
@@ -158,12 +164,63 @@ function Dashboard() {
     ],
   };
 
+  const peakData = {
+    labels: ["Peak Hours", "Off-Peak Hours"],
+    datasets: [
+      {
+        label: "Energy usage distribution",
+        data: [
+          totalConsumption * 0.7,
+          totalConsumption * 0.3,
+        ],
+        backgroundColor: ["#ff9800", "#4caf50"],
+      },
+    ],
+  };
+
+  // --- Comparison Data ---
+  const comparisonData = {
+    labels: ["Today", "Yesterday"], // or ["Uusin", "Edellinen"] for Finnish
+    datasets: [
+      {
+        label: "Consumption (kWh)",
+        data:
+          sortedRecords.length >= 2
+            ? [
+                Number(sortedRecords[0].consumption),
+                Number(sortedRecords[1].consumption),
+              ]
+            : [],
+        backgroundColor: ["#2e7d32", "#c62828"], // Green = better, Red = worse
+      },
+    ],
+  };
+  // --- getComparison function ---
+  const getComparison = () => {
+    if (sortedRecords.length < 2) {
+      return "Ei tarpeeksi tietoja vertailuun.";
+    }
+
+    const latest = Number(sortedRecords[0].consumption);
+    const previous = Number(sortedRecords[1].consumption);
+
+    if (latest < previous) {
+      return "Hyvä! Kulutuksesi on pienentynyt edelliseen merkintään verrattuna.";
+    }
+
+    if (latest > previous) {
+      return "Kulutuksesi on kasvanut. Yritä vähentää energiankäyttöä.";
+    }
+
+    return "Kulutuksesi pysyi samana.";
+  };
+
   return (
     <div style={styles.page}>
       <h2 style={styles.title}>Energy Dashboard</h2>
+      <h3>Tervetuloa, {user?.name}</h3>
 
       {/* File Upload Section */}
-      <h3>Upload Electricity Bill</h3>
       <form onSubmit={handleFileUpload} style={styles.form}>
         <input
           style={styles.input}
@@ -230,11 +287,31 @@ function Dashboard() {
         </button>
       </form>
 
-      <h3>Total Consumption: {totalConsumption} kWh</h3>
-      <h3>Total CO2: {calculateCO2(totalConsumption)} kg</h3>
+
 
       <div style={styles.chartBox}>
         <Bar data={chartData} />
+      </div>
+
+      <div style={styles.chartBox}>
+        <h3>Energy Usage</h3>
+        <Pie data={peakData} />
+      </div>
+
+
+      <div style={{ margin: "20px 0", fontWeight: "bold", color: "#1976d2" }}>
+        Vinkki: Käytä pyykinpesukonetta ja muita suuritehoisia laitteita mieluiten edullisina aikoina (off-peak).
+      </div>
+
+
+      <div style={styles.tipBox}>
+        <h3>Consumption Comparison</h3>
+        <p>{getComparison()}</p>
+      </div>
+
+      <div style={styles.chartBox}>
+        <h3>Energy Consumption Comparison (Latest vs Previous)</h3>
+        <Bar data={comparisonData} />
       </div>
 
       <h3>Energy Records</h3>
@@ -316,6 +393,14 @@ function Dashboard() {
 }
 
 const styles = {
+    tipBox: {
+      background: "#e8f5e9",
+      border: "1px solid #a5d6a7",
+      padding: "18px",
+      borderRadius: "10px",
+      marginBottom: "25px",
+      maxWidth: "900px",
+    },
   page: {
     padding: "30px",
     background: "#f1f8f4",

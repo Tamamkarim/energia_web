@@ -10,6 +10,7 @@ function Login() {
     try {
       const res = await API.post("/auth/login", form);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       window.location.href = "/dashboard";
     } catch (err) {
       alert("Login failed");
@@ -39,6 +40,9 @@ function Login() {
         <button style={styles.button} type="submit">
           Login
         </button>
+        <p style={styles.link} onClick={() => (window.location.href = "/register")}> 
+          Don't have an account? Register
+        </p>
       </form>
     </div>
   );
@@ -82,6 +86,12 @@ const styles = {
     color: "white",
     border: "none",
     borderRadius: "8px",
+    cursor: "pointer",
+  },
+  link: {
+    textAlign: "center",
+    marginTop: "18px",
+    color: "#2e7d32",
     cursor: "pointer",
   },
 };
