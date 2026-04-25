@@ -112,6 +112,29 @@ Järjestelmä mahdollistaa myös sähkölaskujen lataamisen, tietojen visualisoi
   - Kaavioiden tarkastelu
   - Tiedostojen lataus
 
+//kuva  
+<p align="center">
+  <img src="test_kauvat/22.png" alt="صورة 1" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/182541.png" alt="kuva" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/api-test-login....png" alt="kuva 3" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/kava1png.png" alt="kuva 4" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/Näyttökuva .png" alt="kuva 5" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/Näyttökuva 20....png" alt="kuva 6" width="400"/>
+</p>
+<p align="center">
+  <img src="test_kauvat/unit-test-co2.png" alt="kuva 7" width="400"/>
+</p>
+
 ---
 
 ## Ohjelmistoarkkitehtuuri
@@ -128,3 +151,4 @@ Järjestelmä mahdollistaa myös sähkölaskujen lataamisen, tietojen visualisoi
 
 ```bash
 git clone https://github.com/your-username/energia_web.git
+```
