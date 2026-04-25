@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 function Register() {
@@ -8,13 +9,15 @@ function Register() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await API.post("/auth/register", form);
       alert("Registration successful");
-      window.location.href = "/";
+      navigate("/login");
     } catch (error) {
       alert("Registration failed");
     }
@@ -24,7 +27,6 @@ function Register() {
     <div style={styles.page}>
       <form onSubmit={handleSubmit} style={styles.card}>
         <h2 style={styles.title}>Create Account</h2>
-
         <input
           style={styles.input}
           placeholder="Name"
@@ -32,7 +34,6 @@ function Register() {
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           required
         />
-
         <input
           style={styles.input}
           placeholder="Email"
@@ -41,7 +42,6 @@ function Register() {
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
         />
-
         <input
           style={styles.input}
           placeholder="Password"
@@ -50,12 +50,11 @@ function Register() {
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
         />
-
         <button style={styles.button} type="submit">
           Register
         </button>
 
-        <p style={styles.link} onClick={() => (window.location.href = "/")}>
+        <p style={styles.link} onClick={() => (window.location.href = "/")}> 
           Already have an account? Login
         </p>
       </form>
@@ -88,24 +87,8 @@ const styles = {
     marginBottom: "18px",
     borderRadius: "8px",
     border: "1px solid #ccc",
-    fontSize: "16px",
-  },
-  button: {
-    width: "100%",
-    padding: "14px",
-    background: "#2e7d32",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "16px",
-  },
-  link: {
-    textAlign: "center",
-    marginTop: "18px",
-    color: "#2e7d32",
-    cursor: "pointer",
-  },
+    fontSize: "16px"
+  }
 };
 
 export default Register;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 import {
@@ -23,11 +24,13 @@ function Dashboard() {
     notes: "",
   });
 
+  const navigate = useNavigate();
+
   // Logout handler
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/";
+    navigate("/");
   };
 
   // File upload states
@@ -39,7 +42,7 @@ function Dashboard() {
       const res = await API.get("/files");
       setFiles(res.data);
     } catch (error) {
-      alert("Error fetching files");
+      alert("Virhe tiedostojen haussa");
     }
   };
 
@@ -48,7 +51,7 @@ function Dashboard() {
     e.preventDefault();
 
     if (!selectedFile) {
-      alert("Please choose a file");
+      alert("Valitse tiedosto");
       return;
     }
 
@@ -65,7 +68,7 @@ function Dashboard() {
       setSelectedFile(null);
       fetchFiles();
     } catch (error) {
-      alert("File upload failed");
+      alert("Tiedoston lataus epäonnistui");
     }
   };
 
@@ -94,7 +97,7 @@ function Dashboard() {
       const res = await API.get("/energy");
       setRecords(res.data);
     } catch (error) {
-      alert("Error fetching energy data");
+      alert("Virhe energiatietojen haussa");
     }
   };
 
@@ -111,7 +114,7 @@ function Dashboard() {
       setForm({ consumption: "", date: "", notes: "" });
       fetchRecords();
     } catch (error) {
-      alert("Failed to add energy record");
+      alert("Energiamerkinnän lisääminen epäonnistui");
     }
   };
 
@@ -133,19 +136,19 @@ function Dashboard() {
       setEditForm({ consumption: "", date: "", notes: "" });
       fetchRecords();
     } catch (error) {
-      alert("Failed to update record");
+      alert("Merkinnän päivitys epäonnistui");
     }
   };
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Delete this record?");
+    const confirmDelete = window.confirm("Poistetaanko tämä merkintä?");
     if (!confirmDelete) return;
 
     try {
       await API.delete(`/energy/${id}`);
       fetchRecords();
     } catch (error) {
-      alert("Failed to delete record");
+      alert("Merkinnän poistaminen epäonnistui");
     }
   };
 
@@ -212,11 +215,11 @@ function Dashboard() {
     const previous = Number(sortedRecords[1].consumption);
 
     if (latest < previous) {
-      return "Hyvä! Kulutuksesi on pienentynyt edelliseen merkintään verrattuna.";
+      return "Hienoa! Kulutuksesi on pienentynyt";
     }
 
     if (latest > previous) {
-      return "Kulutuksesi on kasvanut. Yritä vähentää energiankäyttöä.";
+      return "Kulutuksesi on kasvanut";
     }
 
     return "Kulutuksesi pysyi samana.";
@@ -227,10 +230,10 @@ function Dashboard() {
       <div style={styles.header}>
         <h3>Tervetuloa, {user?.name}</h3>
         <button style={styles.logoutButton} onClick={handleLogout}>
-          Logout
+          Kirjaudu ulos
         </button>
       </div>
-      <h2 style={styles.title}>Energy Dashboard</h2>
+      <h2 style={styles.title}>Energiapaneeli</h2>
 
       {/* File Upload Section */}
       <form onSubmit={handleFileUpload} style={styles.form}>
@@ -240,22 +243,22 @@ function Dashboard() {
           onChange={(e) => setSelectedFile(e.target.files[0])}
         />
         <button style={styles.button} type="submit">
-          Upload File
+          Lataa tiedosto
         </button>
       </form>
 
-      <h3>Uploaded Files</h3>
+      <h3>Ladatut tiedostot</h3>
       {files.map((file) => (
         <div key={file.id} style={styles.card}>
           <p>
-            <strong>File:</strong> {file.original_name}
+            <strong>Tiedosto:</strong> {file.original_name}
           </p>
           <a
             href={`http://localhost:5000/${file.file_path.replace("\\", "/")}`}
             target="_blank"
             rel="noreferrer"
           >
-            Open file
+            Avaa tiedosto
           </a>
           {file.mimetype && file.mimetype.startsWith("image/") && (
             <img
@@ -272,7 +275,7 @@ function Dashboard() {
         <input
           style={styles.input}
           type="number"
-          placeholder="Consumption kWh"
+          placeholder="Kulutus (kWh)"
           value={form.consumption}
           onChange={(e) => setForm({ ...form, consumption: e.target.value })}
           required
@@ -289,58 +292,54 @@ function Dashboard() {
         <input
           style={styles.input}
           type="text"
-          placeholder="Notes"
+          placeholder="Muistiinpanot"
           value={form.notes}
           onChange={(e) => setForm({ ...form, notes: e.target.value })}
         />
 
         <button style={styles.button} type="submit">
-          Add Record
+          Lisää merkintä
         </button>
       </form>
-
-
 
       <div style={styles.chartBox}>
         <Bar data={chartData} />
       </div>
 
       <div style={styles.chartBox}>
-        <h3>Energy Usage</h3>
+        <h3>Energiankäyttö</h3>
         <Pie data={peakData} />
       </div>
 
-
       <div style={{ margin: "20px 0", fontWeight: "bold", color: "#1976d2" }}>
-        Vinkki: Käytä pyykinpesukonetta ja muita suuritehoisia laitteita mieluiten edullisina aikoina (off-peak).
+        Energiansäästövinkki: Käytä suuritehoisia laitteita edullisina aikoina (off-peak).
       </div>
 
-
       <div style={styles.tipBox}>
-        <h3>Consumption Comparison</h3>
+        <h3>Kulutuksen vertailu</h3>
         <p>{getComparison()}</p>
       </div>
 
       <div style={styles.chartBox}>
-        <h3>Energy Consumption Comparison (Latest vs Previous)</h3>
+        <h3>Kulutuksen vertailu (Uusin vs Edellinen)</h3>
         <Bar data={comparisonData} />
       </div>
 
-      <h3>Energy Records</h3>
+      <h3>Energiatiedot</h3>
 
       {sortedRecords.map((item) => (
         <div key={item.id} style={styles.card}>
           <p>
-            <strong>Date:</strong> {formatDate(item.date)}
+            <strong>Päivämäärä:</strong> {formatDate(item.date)}
           </p>
           <p>
-            <strong>Consumption:</strong> {item.consumption} kWh
+            <strong>Kulutus:</strong> {item.consumption} kWh
           </p>
           <p>
-            <strong>CO2 Impact:</strong> {calculateCO2(item.consumption)} kg
+            <strong>CO2-päästöt:</strong> {calculateCO2(item.consumption)} kg
           </p>
           <p>
-            <strong>Notes:</strong> {item.notes}
+            <strong>Muistiinpanot:</strong> {item.notes}
           </p>
 
           {editingId === item.id ? (
@@ -375,7 +374,7 @@ function Dashboard() {
               />
 
               <button style={styles.button} type="submit">
-                Save
+                Tallenna
               </button>
 
               <button
@@ -383,12 +382,12 @@ function Dashboard() {
                 type="button"
                 onClick={() => setEditingId(null)}
               >
-                Cancel
+                Peruuta
               </button>
             </form>
           ) : (
             <button style={styles.editButton} onClick={() => startEdit(item)}>
-              Edit
+              Muokkaa
             </button>
           )}
 
@@ -396,7 +395,7 @@ function Dashboard() {
             style={styles.deleteButton}
             onClick={() => handleDelete(item.id)}
           >
-            Delete
+            Poista
           </button>
         </div>
       ))}

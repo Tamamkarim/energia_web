@@ -20,28 +20,27 @@ function Login() {
   return (
     <div style={styles.page}>
       <form onSubmit={handleSubmit} style={styles.card}>
-        <h2 style={styles.title}>Eco Energy Tracker</h2>
-        <p style={styles.subtitle}>Login to your account</p>
+        <h2 style={styles.title}>Kirjaudu sisään</h2>
 
         <input
           style={styles.input}
-          placeholder="Email"
+          placeholder="Sähköposti"
           type="email"
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
         <input
           style={styles.input}
-          placeholder="Password"
+          placeholder="Salasana"
           type="password"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
         <button style={styles.button} type="submit">
-          Login
+          Kirjaudu
         </button>
         <p style={styles.link} onClick={() => (window.location.href = "/register")}> 
-          Don't have an account? Register
+          Ei vielä tiliä? Rekisteröidy
         </p>
       </form>
     </div>
