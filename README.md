@@ -1,51 +1,130 @@
-تعليمات عامة عن المشروع
-Tämä projekti on web-pohjainen sovellus, jonka tavoitteena on auttaa käyttäjiä seuraamaan ja ymmärtämään omaa energiankulutustaan. Sovellus mahdollistaa energiankulutustietojen lisäämisen, muokkaamisen ja poistamisen sekä datan visualisoinnin kaavioiden avulla.
+# Eco Energy Tracker
 
-Sovellus tukee myös tiedostojen lataamista (esim. sähkölaskut), jolloin käyttäjä voi hallita ja tarkastella omaa energiadataansa yhdessä paikassa.
+## Projektin Yleiskuvaus
 
-Projektissa on hyödynnetty modernia web-teknologiaa, kuten React frontendissä ja Node.js + Express backendissä sekä MariaDB-tietokantaa.
-🧑‍💻 2) Käyttöohje (User Instructions)
-Käyttäjä voi käyttää sovellusta seuraavasti:
+Eco Energy Tracker on full stack -verkkosovellus, jonka avulla käyttäjät voivat seurata sähkönkulutustaan, ymmärtää ympäristövaikutuksia (CO2) ja arvioida kuukausittaista sähkölaskuaan.
 
-1. Rekisteröidy sovellukseen syöttämällä nimi, sähköposti ja salasana.
-2. Kirjaudu sisään omilla tunnuksillasi.
-3. Lisää energiankulutustietoja syöttämällä kulutus (kWh), päivämäärä ja mahdolliset muistiinpanot.
-4. Tarkastele kulutusta visuaalisesti kaavioiden avulla.
-5. Muokkaa tai poista aiemmin lisättyjä tietoja.
-6. Lataa sähkölaskuja tai muita tiedostoja järjestelmään.
-7. Etsi ja avaa ladattuja tiedostoja.
-⚙️ 3) Tekninen toteutus
-Sovellus on toteutettu full-stack-ratkaisuna:
+Järjestelmä mahdollistaa myös sähkölaskujen lataamisen, tietojen visualisoinnin kaavioilla sekä älykkäiden energiansäästövinkkien saamisen.
 
-Frontend:
-- React (SPA)
-- Chart.js kaavioiden visualisointiin
+---
 
-Backend:
-- Node.js ja Express
-- REST API
+## 🎯 Kohderyhmä
 
-Tietokanta:
+- Opiskelijat ja nuoret aikuiset
+- Kotitaloudet, jotka hallitsevat sähkökustannuksia
+- Käyttäjät, jotka haluavat vähentää energiankulutusta
+
+---
+
+## Käytetyt Teknologiat
+
+### Frontend
+- React.js (SPA)
+- Chart.js
+- jsPDF (laskujen luontiin)
+
+### Backend
+- Node.js
+- Express.js (REST API)
+
+### Tietokanta
 - MariaDB
 
-Autentikointi:
-- JSON Web Token (JWT)
+### Muut työkalut
+- JWT-autentikointi
+- Multer (tiedostojen lataus)
+- Ulkoinen API (sähkön hinta – Suomi)
 
-Tiedostojen käsittely:
-- Multer (file upload)
-🔐 4) Tietoturva
-Sovellus käyttää JWT-autentikointia käyttäjän tunnistamiseen. Salasanat tallennetaan tietokantaan hashattuina, mikä parantaa tietoturvaa. API-reitit on suojattu siten, että käyttäjä voi käsitellä vain omia tietojaan.
-🌱 5) Kestävä kehitys (مهم جدًا لمشروعك)
-Sovellus tukee kestävää kehitystä tarjoamalla käyttäjälle tietoa energiankulutuksesta ja sen ympäristövaikutuksista. Energiankulutus muunnetaan CO2-päästöiksi, mikä auttaa käyttäjää ymmärtämään kulutuksen vaikutuksia ympäristöön.
+---
 
-Tavoitteena on lisätä käyttäjän tietoisuutta ja kannustaa energiansäästöön.
-📊 6) Käytettävyys (UX)
-Käyttöliittymä on suunniteltu yksinkertaiseksi ja selkeäksi. Sovellus tarjoaa visuaalisia kaavioita, jotka helpottavat datan ymmärtämistä. Lisäksi sovellus toimii responsiivisesti eri laitteilla.
-🚀 7) Jatkokehitys
-Mahdollisia jatkokehitysideoita:
+## Ominaisuudet
 
-- Energiansäästövinkkien lisääminen
-- Ilmoitukset kulutusrajojen ylityksestä
-- Usean käyttäjän kotitalousnäkymä
-- Dark mode
-- Monikielisyyden laajentaminen
+### Käyttäjähallinta *
+- Rekisteröityminen ja kirjautuminen
+- JWT-autentikointi
+- Suojatut reitit
+
+### Energiankulutuksen seuranta *
+- Lisää, muokkaa, poista kulutustietoja
+- Näe kokonaiskulutus
+- CO2-laskenta
+
+### Datan visualisointi *
+- Pylväsdiagrammi energiankulutuksesta
+- Ympyrädiagrammi huippu- ja hiljaisista ajoista
+- Tietueiden vertailu
+
+### Tiedostojen lataus *
+- Lataa sähkölaskuja
+- Näe ladatut tiedostot
+
+### Laskutusjärjestelmä
+- Automaattinen kuukausilaskun laskenta
+- Sähkön hinnan integrointi
+- Lataa lasku PDF-muodossa
+- Laskun numero, yrityksen nimi, eräpäivä
+
+### Ylläpitäjän hallintapaneeli
+- Näe kaikki käyttäjät
+- Näe kaikki energiankulutustiedot
+- Roolipohjainen käyttöoikeus
+
+---
+
+## Tietokantarakenne
+
+### Käyttäjät-taulu
+- id
+- nimi
+- sähköposti
+- salasana
+- rooli
+
+### Energiatiedot
+- id
+- user_id
+- kulutus
+- päivämäärä
+- muistiinpanot
+
+### Tiedostot
+- id
+- user_id
+- tiedostopolku
+- alkuperäinen_nimi
+- mimetype
+
+---
+
+## Testaus
+
+### Yksikkötestaus
+- CO2-laskenta testattu Jestillä
+
+### API-testaus
+- Kirjautumisrajapinta testattu Supertestillä
+
+### Käytettävyystestaus
+- Testattu kolmella oikealla käyttäjällä
+- Käyttäjät suorittivat onnistuneesti:
+  - Kirjautuminen
+  - Energiatietojen lisääminen
+  - Kaavioiden tarkastelu
+  - Tiedostojen lataus
+
+---
+
+## Ohjelmistoarkkitehtuuri
+
+- Frontend kommunikoi backendin kanssa REST API:n kautta
+- Backend yhdistyy MariaDB-tietokantaan
+- Ulkoinen API käytössä sähkön todellisiin hintoihin
+
+---
+
+## Projektin Käynnistäminen
+
+### 1. Kloonaa repositorio
+
+```bash
+git clone https://github.com/your-username/energia_web.git

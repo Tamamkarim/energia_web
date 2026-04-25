@@ -5,6 +5,7 @@ CREATE TABLE users (
   name VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'user',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -30,3 +31,10 @@ CREATE TABLE files (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+// Insert default admin user
+ALTER TABLE users
+ADD COLUMN role VARCHAR(20) DEFAULT 'user';
+
+UPDATE users
+SET role = 'admin'
+WHERE email = 't@karim.com';
