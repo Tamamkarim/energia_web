@@ -112,7 +112,7 @@ Järjestelmä mahdollistaa myös sähkölaskujen lataamisen, tietojen visualisoi
   - Kaavioiden tarkastelu
   - Tiedostojen lataus
 
-//kuva  
+//kuvat test
 <p align="center">
   <img src="test_kauvat/22.png" alt="صورة 1" width="400"/>
 </p>
@@ -145,10 +145,40 @@ Järjestelmä mahdollistaa myös sähkölaskujen lataamisen, tietojen visualisoi
 
 ---
 
-## Projektin Käynnistäminen
+## Kuinka projekti käynnistetään
 
-### 1. Kloonaa repositorio
+### 1. Backendin käynnistys
 
 ```bash
-git clone https://github.com/your-username/energia_web.git
+cd backend
+npm install
+npm start
 ```
+- Käynnistää palvelimen oletusporttiin (yleensä 5000 tai asetusten mukaan).
+- Varmista, että tietokanta (MariaDB) on asennettu ja yhteystiedot päivitetty tiedostoon backend/database.js.
+
+### 2. Frontendin käynnistys
+
+```bash
+cd frontend
+npm install
+npm start
+```
+- Avaa sovelluksen selaimessa osoitteessa: http://localhost:3000
+
+### 3. Testien suoritus
+
+#### Backend-testit (Jest & Supertest)
+
+```bash
+cd backend
+npm test
+```
+
+#### Frontend-testit (jos olemassa)
+
+```bash
+cd frontend
+npm test
+```
+
