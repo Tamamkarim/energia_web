@@ -23,6 +23,13 @@ function Dashboard() {
     notes: "",
   });
 
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
+
   // File upload states
   const [selectedFile, setSelectedFile] = useState(null);
   const [files, setFiles] = useState([]);
@@ -217,8 +224,13 @@ function Dashboard() {
 
   return (
     <div style={styles.page}>
+      <div style={styles.header}>
+        <h3>Tervetuloa, {user?.name}</h3>
+        <button style={styles.logoutButton} onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
       <h2 style={styles.title}>Energy Dashboard</h2>
-      <h3>Tervetuloa, {user?.name}</h3>
 
       {/* File Upload Section */}
       <form onSubmit={handleFileUpload} style={styles.form}>
@@ -393,14 +405,28 @@ function Dashboard() {
 }
 
 const styles = {
-    tipBox: {
-      background: "#e8f5e9",
-      border: "1px solid #a5d6a7",
-      padding: "18px",
-      borderRadius: "10px",
-      marginBottom: "25px",
-      maxWidth: "900px",
-    },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+  },
+  logoutButton: {
+    padding: "8px 16px",
+    borderRadius: "6px",
+    border: "none",
+    background: "#c62828",
+    color: "white",
+    cursor: "pointer",
+  },
+  tipBox: {
+    background: "#e8f5e9",
+    border: "1px solid #a5d6a7",
+    padding: "18px",
+    borderRadius: "10px",
+    marginBottom: "25px",
+    maxWidth: "900px",
+  },
   page: {
     padding: "30px",
     background: "#f1f8f4",
