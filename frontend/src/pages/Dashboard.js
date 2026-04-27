@@ -88,7 +88,7 @@ function Dashboard() {
   // Fetch uploaded files
   const fetchFiles = async () => {
     try {
-      const res = await API.get("/files");
+      const res = await API.get("/api/files");
       setFiles(res.data);
     } catch (error) {
       alert("Virhe tiedostojen haussa");
