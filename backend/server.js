@@ -10,7 +10,10 @@ const fileRoutes = require("./routes/fileRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://admirable-salamander-c734c0.netlify.app/",
+  credentials: true
+}));
 app.use(express.json());
 
 

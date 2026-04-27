@@ -344,7 +344,7 @@ function Dashboard() {
             <strong>Tiedosto:</strong> {file.original_name}
           </p>
           <a
-            href={`http://localhost:5000/${file.file_path.replace("\\", "/")}`}
+            href={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -352,7 +352,7 @@ function Dashboard() {
           </a>
           {file.mimetype && file.mimetype.startsWith("image/") && (
             <img
-              src={`http://localhost:5000/${file.file_path.replace("\\", "/")}`}
+              src={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
               alt={file.original_name}
               style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
             />
