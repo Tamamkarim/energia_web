@@ -37,6 +37,31 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcEle
 
 
 function Dashboard() {
+    // --- إضافة دالة إضافة الاستهلاك ---
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      try {
+        await API.post("/energy", form);
+
+        setForm({
+          consumption: "",
+          date: "",
+          notes: "",
+        });
+
+        fetchRecords();
+      } catch (error) {
+        alert("Tietojen lisääminen epäonnistui");
+      }
+    };
+
+    // --- استدعاء الدوال عند التحميل ---
+    useEffect(() => {
+      fetchRecords();
+      fetchFiles();
+      fetchElectricityPrice();
+    }, []);
   const [records, setRecords] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const [form, setForm] = useState({
