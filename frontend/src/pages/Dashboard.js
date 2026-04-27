@@ -37,24 +37,25 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcEle
 
 
 function Dashboard() {
-    // --- إضافة دالة إضافة الاستهلاك ---
-    const handleSubmit = async (e) => {
-      e.preventDefault();
 
-      try {
-        await API.post("/energy", form);
+  // 👇 ضع الدالة هنا مباشرة بعد useState
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        setForm({
-          consumption: "",
-          date: "",
-          notes: "",
-        });
+    try {
+      await API.post("/energy", form);
 
-        fetchRecords();
-      } catch (error) {
-        alert("Tietojen lisääminen epäonnistui");
-      }
-    };
+      setForm({
+        consumption: "",
+        date: "",
+        notes: "",
+      });
+
+      fetchRecords();
+    } catch (error) {
+      alert("Tietojen lisääminen epäonnistui");
+    }
+  };
 
     // --- استدعاء الدوال عند التحميل ---
     useEffect(() => {
