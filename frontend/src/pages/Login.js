@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../services/api";
+import axios from "axios";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -8,7 +8,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", form);
+      const res = await axios.post("https://energia-web-1.onrender.com/api/auth/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       window.location.href = "/dashboard";

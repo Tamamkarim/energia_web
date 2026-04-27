@@ -15,7 +15,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await axios.post("https://energia-web-1.onrender.com/api/register", form);
+      await axios.post("https://energia-web-1.onrender.com/api/auth/register", form);
       alert("Registration successful");
       navigate("/login");
     } catch (error) {
