@@ -11,7 +11,8 @@ const fileRoutes = require("./routes/fileRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "https://admirable-salamander-c734c0.netlify.app/",
+  origin: "*", // مؤقتًا للسماح للجميع
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(express.json());
