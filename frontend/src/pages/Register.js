@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../services/api";
+import axios from "axios";
 
 function Register() {
   const [form, setForm] = useState({
@@ -15,7 +15,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await API.post("/auth/register", form);
+      await axios.post("https://energia-web-1.onrender.com/api/register", form);
       alert("Registration successful");
       navigate("/login");
     } catch (error) {
