@@ -44,6 +44,7 @@ const getUserFiles = async (req, res) => {
 
 		res.json(files);
 	} catch (error) {
+		console.error("FILES ERROR:", error);
 		res.status(500).json({
 			message: "Failed to fetch files",
 			error: error.message,

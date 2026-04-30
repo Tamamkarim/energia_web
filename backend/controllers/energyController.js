@@ -32,6 +32,7 @@ const getEnergyRecords = async (req, res) => {
 
     res.json(records);
   } catch (error) {
+    console.error("ENERGY ERROR:", error);
     res.status(500).json({ message: "Failed to get energy records", error: error.message });
   }
 };
