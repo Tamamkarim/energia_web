@@ -1,3 +1,4 @@
+import Interactions from "../components/Interactions";
 import { useEffect, useState } from "react";
 // Admin Dashboard button style
 const adminButtonStyle = {
@@ -37,8 +38,9 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcEle
 
 
 function Dashboard() {
+  // ...existing code...
 
-  // 👇 ضع الدالة هنا مباشرة بعد useState
+  // ضع الدالة هنا مباشرة بعد useState
   // File search state
   const [fileSearch, setFileSearch] = useState("");
   const handleSubmit = async (e) => {
@@ -487,6 +489,19 @@ function Dashboard() {
             Lisää merkintä
           </button>
         </form>
+      </div>
+
+      {/* Energy Records List with Interactions */}
+      <div style={styles.section}>
+        <h3>Energiankulutustiedot</h3>
+        {sortedRecords.map((record) => (
+          <div key={record.id} style={{ marginBottom: 24, padding: 16, background: '#fff', borderRadius: 8 }}>
+            <p><strong>Kulutus:</strong> {record.consumption} kWh</p>
+            <p><strong>Päivämäärä:</strong> {formatDate(record.date)}</p>
+            <p><strong>Muistiinpanot:</strong> {record.notes}</p>
+            <Interactions recordId={record.id} />
+          </div>
+        ))}
       </div>
 
       <div style={styles.chartBox}>
