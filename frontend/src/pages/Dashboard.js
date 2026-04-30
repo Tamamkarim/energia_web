@@ -206,7 +206,7 @@ function Dashboard() {
 
     doc.text(`Kokonaiskulutus: ${totalConsumption.toFixed(2)} kWh`, 20, 95);
     doc.text(`Sähkön hinta: ${pricePerKwh.toFixed(2)} €/kWh`, 20, 105);
-    doc.text(`Kuukausimaksu: ${monthlyFixedFee.toFixed(2)} €`, 20, 115);
+    doc.text(`Kuukausimaksu: ${monthlyFee.toFixed(2)} €`, 20, 115);
     doc.text(`CO2-päästöt: ${calculateCO2(totalConsumption)} kg`, 20, 125);
 
     doc.setFontSize(16);
@@ -407,7 +407,7 @@ function Dashboard() {
           <strong>Sähkön hinta:</strong> {pricePerKwh.toFixed(2)} €/kWh
         </p>
         <p>
-          <strong>Kuukausimaksu:</strong> {monthlyFixedFee.toFixed(2)} €
+          <strong>Kuukausimaksu:</strong> {monthlyFee.toFixed(2)} €
         </p>
         <p>
           <strong>CO2-päästöt:</strong> {calculateCO2(totalConsumption)} kg
