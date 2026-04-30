@@ -172,7 +172,9 @@ function Dashboard() {
   const pricePerKwh = electricityPrice ? electricityPrice.price / 100 : 0.0; // convert snt to euro
   const monthlyFixedFee = 5.0; // Example fixed fee, adjust as needed
 
-  const estimatedBill = totalConsumption * pricePerKwh + monthlyFixedFee;
+  const estimatedBill = totalConsumption > 0
+    ? totalConsumption * pricePerKwh + monthlyFixedFee
+    : 0;
 
   // --- Company and Invoice Number ---
   const companyName = "Eco Energy Tracker Oy";
