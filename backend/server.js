@@ -8,6 +8,8 @@ const priceRoutes = require("./routes/priceRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const fileRoutes = require("./routes/fileRoutes");
 
+
+const interactionRoutes = require("./routes/interactionRoutes");
 const app = express();
 
 app.use(cors({
@@ -20,11 +22,13 @@ app.use(express.json());
 
 app.use("/uploads", express.static("uploads"));
 
+
 app.use("/api/auth", authRoutes);
 app.use("/api/energy", energyRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/prices", priceRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/interactions", interactionRoutes);
 
 app.get("/", (req, res) => {
   res.send("Eco Energy Tracker API is running");
