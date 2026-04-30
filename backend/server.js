@@ -11,7 +11,7 @@ const fileRoutes = require("./routes/fileRoutes");
 const app = express();
 
 app.use(cors({
-  origin: "*", // مؤقتًا للسماح للجميع
+  origin: "https://tk-web.netlify.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
