@@ -1,3 +1,8 @@
+// Comments fetch route (dummy)
+const verifyToken = authMiddleware;
+router.get("/comments/:recordId", verifyToken, async (req, res) => {
+  res.json([]);
+});
 const express = require("express");
 const router = express.Router();
 const pool = require("../database");
