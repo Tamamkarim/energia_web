@@ -170,22 +170,25 @@ function Dashboard() {
 
   // Set pricePerKwh and monthlyFixedFee
   const pricePerKwh = electricityPrice ? electricityPrice.price / 100 : 0.0; // convert snt to euro
-  const monthlyFixedFee = 5.0; // Example fixed fee, adjust as needed
 
+  // Monthly fee only if there is consumption
+  const monthlyFee = totalConsumption > 0 ? 5 : 0;
   const estimatedBill = totalConsumption > 0
-    ? totalConsumption * pricePerKwh + monthlyFixedFee
+    ? totalConsumption * pricePerKwh + monthlyFee
     : 0;
 
-  // --- Company and Invoice Number ---
-  const companyName = "Eco Energy Tracker Oy";
-  const invoiceNumber = `INV-${new Date().getFullYear()}-${String(user?.id || 1).padStart(3, "0")}`;
+  // Company name from user if available
+  const companyName = user?.name || "Käyttäjä";
+  // Invoice number uses user id if available
+  const invoiceNumber = user
+    ? `INV-${new Date().getFullYear()}-${String(user.id).padStart(3, "0")}`
+    : "";
 
-  // --- Payment Due Date Calculation ---
-  const today = new Date();
-  const paymentDate = new Date();
-  paymentDate.setDate(today.getDate() + 14); // +14 days
-  const formattedPaymentDate = paymentDate.toLocaleDateString("fi-FI");
-  const invoiceDate = today.toLocaleDateString("fi-FI");
+  // Due date always 14 days from now
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 14);
+  const formattedPaymentDate = dueDate.toLocaleDateString("fi-FI");
+  const invoiceDate = new Date().toLocaleDateString("fi-FI");
 
   // PDF download function
   const downloadInvoice = () => {
