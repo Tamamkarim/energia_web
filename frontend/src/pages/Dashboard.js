@@ -39,6 +39,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcEle
 function Dashboard() {
 
   // 👇 ضع الدالة هنا مباشرة بعد useState
+  // File search state
+  const [fileSearch, setFileSearch] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -309,118 +311,147 @@ function Dashboard() {
           </button>
         </div>
       </div>
-      <h2 style={styles.title}>Energiapaneeli</h2>
 
-      {/* Electricity price and bill */}
-      <h3>
-        Sähkön hinta nyt:{" "}
-        {electricityPrice
-          ? `${electricityPrice.price.toFixed(2)} snt/kWh`
-          : "Ladataan..."}
-      </h3>
-      <h3>
-        Arvioitu lasku: {estimatedBill.toFixed(2)} €
-      </h3>
+      {records.length === 0 ? (
+        <div>
+          <h2>Energiapaneeli</h2>
+          <p>Ei vielä energiankulutustietoja.</p>
+          <p>Lisää ensin kulutustiedot nähdäksesi laskun.</p>
+        </div>
+      ) : (
+        <>
+          <h2 style={styles.title}>Energiapaneeli</h2>
+          {/* Electricity price and bill */}
+          <h3>
+            Sähkön hinta nyt:{" "}
+            {electricityPrice
+              ? `${electricityPrice.price.toFixed(2)} snt/kWh`
+              : "Ladataan..."}
+          </h3>
+          <h3>
+            Arvioitu lasku: {estimatedBill.toFixed(2)} €
+          </h3>
 
-      {/* Admin Dashboard Button - Only for Admins */}
-      {user?.role === "admin" && (
-        <button
-          style={adminButtonStyle}
-          onClick={() => (window.location.href = "/admin")}
-        >
-          Admin Dashboard
-        </button>
+          {/* Admin Dashboard Button - Only for Admins */}
+          {user?.role === "admin" && (
+            <button
+              style={adminButtonStyle}
+              onClick={() => (window.location.href = "/admin")}
+            >
+              Admin Dashboard
+            </button>
+          )}
+
+          {/* Stats Cards */}
+          <div style={styles.statsGrid}>
+            <div style={styles.statCard}>
+              <h3>Kokonaiskulutus</h3>
+              <p>{totalConsumption.toFixed(2)} kWh</p>
+            </div>
+            <div style={styles.statCard}>
+              <h3>CO2-päästöt</h3>
+              <p>{calculateCO2(totalConsumption)} kg</p>
+            </div>
+            <div style={styles.statCard}>
+              <h3>Kuukausilasku</h3>
+              <p>{estimatedBill.toFixed(2)} €</p>
+            </div>
+            <div style={styles.statCard}>
+              <h3>Merkinnät</h3>
+              <p>{records.length}</p>
+            </div>
+          </div>
+
+          {/* File Upload Section */}
+          <div style={styles.section}>
+            <h3>Lataa sähkölasku</h3>
+            <form onSubmit={handleFileUpload} style={styles.form}>
+              <input
+                style={styles.input}
+                type="file"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+              />
+              <button style={styles.button} type="submit">
+                Lataa tiedosto
+              </button>
+            </form>
+          </div>
+        </>
       )}
 
 
-      {/* Stats Cards */}
-      <div style={styles.statsGrid}>
-        <div style={styles.statCard}>
-          <h3>Kokonaiskulutus</h3>
-          <p>{totalConsumption.toFixed(2)} kWh</p>
-        </div>
-        <div style={styles.statCard}>
-          <h3>CO2-päästöt</h3>
-          <p>{calculateCO2(totalConsumption)} kg</p>
-        </div>
-        <div style={styles.statCard}>
-          <h3>Kuukausilasku</h3>
-          <p>{estimatedBill.toFixed(2)} €</p>
-        </div>
-        <div style={styles.statCard}>
-          <h3>Merkinnät</h3>
-          <p>{records.length}</p>
-        </div>
-      </div>
-
-      {/* File Upload Section */}
-      <div style={styles.section}>
-        <h3>Lataa sähkölasku</h3>
-        <form onSubmit={handleFileUpload} style={styles.form}>
-          <input
-            style={styles.input}
-            type="file"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
-          />
-          <button style={styles.button} type="submit">
-            Lataa tiedosto
-          </button>
-        </form>
-      </div>
-
       <h3>Ladatut tiedostot</h3>
-      {files.map((file) => (
-        <div key={file.id} style={styles.card}>
-          <p>
-            <strong>Tiedosto:</strong> {file.original_name}
-          </p>
-          <a
-            href={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Avaa tiedosto
-          </a>
-          {file.mimetype && file.mimetype.startsWith("image/") && (
-            <img
-              src={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
-              alt={file.original_name}
-              style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
-            />
-          )}
-        </div>
-      ))}
+      <input
+        style={styles.input}
+        type="text"
+        placeholder="Hae tiedostoja..."
+        value={fileSearch}
+        onChange={(e) => setFileSearch(e.target.value)}
+      />
+      {files
+        .filter((file) =>
+          file.original_name.toLowerCase().includes(fileSearch.toLowerCase())
+        )
+        .map((file) => (
+          <div key={file.id} style={styles.card}>
+            <p>
+              <strong>Tiedosto:</strong> {file.original_name}
+            </p>
+            <a
+              href={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Avaa tiedosto
+            </a>
+            {file.mimetype && file.mimetype.startsWith("image/") && (
+              <img
+                src={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
+                alt={file.original_name}
+                style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
+              />
+            )}
+          </div>
+        ))}
+
 
       {/* Kuukausilasku (Invoice) Section */}
-      <div style={styles.invoiceBox}>
-        <h3>Kuukausilasku</h3>
-        <p>
-          <strong>Yritys:</strong> {companyName}
-        </p>
-        <p>
-          <strong>Laskun numero:</strong> {invoiceNumber}
-        </p>
-        <p>
-          <strong>Kokonaiskulutus:</strong> {totalConsumption.toFixed(2)} kWh
-        </p>
-        <p>
-          <strong>Sähkön hinta:</strong> {pricePerKwh.toFixed(2)} €/kWh
-        </p>
-        <p>
-          <strong>Kuukausimaksu:</strong> {monthlyFee.toFixed(2)} €
-        </p>
-        <p>
-          <strong>CO2-päästöt:</strong> {calculateCO2(totalConsumption)} kg
-        </p>
-        {/* Payment Due Date */}
-        <p>
-          <strong>Eräpäivä:</strong> {formattedPaymentDate}
-        </p>
-        <h3>Arvioitu kuukausilasku: {estimatedBill.toFixed(2)} €</h3>
-        <button style={styles.button} onClick={downloadInvoice}>
-          Lataa lasku PDF
-        </button>
-      </div>
+      {totalConsumption > 0 ? (
+        <div style={styles.invoiceBox}>
+          <h3>Kuukausilasku</h3>
+          <p>
+            <strong>Yritys:</strong> {companyName}
+          </p>
+          <p>
+            <strong>Laskun numero:</strong> {invoiceNumber}
+          </p>
+          <p>
+            <strong>Kokonaiskulutus:</strong> {totalConsumption.toFixed(2)} kWh
+          </p>
+          <p>
+            <strong>Sähkön hinta:</strong> {pricePerKwh.toFixed(2)} €/kWh
+          </p>
+          <p>
+            <strong>Kuukausimaksu:</strong> {monthlyFee.toFixed(2)} €
+          </p>
+          <p>
+            <strong>CO2-päästöt:</strong> {calculateCO2(totalConsumption)} kg
+          </p>
+          {/* Payment Due Date */}
+          <p>
+            <strong>Eräpäivä:</strong> {formattedPaymentDate}
+          </p>
+          <h3>Arvioitu kuukausilasku: {estimatedBill.toFixed(2)} €</h3>
+          <button style={styles.button} onClick={downloadInvoice}>
+            Lataa lasku PDF
+          </button>
+        </div>
+      ) : (
+        <div style={styles.invoiceBox}>
+          <h3>Kuukausilasku</h3>
+          <p>Lisää ensin energiankulutustiedot nähdäksesi laskun.</p>
+        </div>
+      )}
 
 
       {/* Energy Records Section */}
