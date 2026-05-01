@@ -3,16 +3,33 @@ const router = express.Router();
 const pool = require("../database");
 const authMiddleware = require("../middleware/authMiddleware");
 
-// =======================
-// Get comments (dummy)
-// =======================
-router.get("/comments/:recordId", authMiddleware, async (req, res) => {
-  res.json([]);
+router.get("/test", (req, res) => {
+  res.json({ message: "Interactions route works" });
 });
 
-// =======================
+
+// Get comments
+router.get("/comments/:recordId", authMiddleware, async (req, res) => {
+  const recordId = req.params.recordId;
+
+  try {
+    const [comments] = await pool.query(
+      `SELECT c.id, c.comment, c.created_at, u.name
+       FROM comments c
+       JOIN users u ON c.user_id = u.id
+       WHERE c.record_id = ?
+       ORDER BY c.created_at DESC`,
+      [recordId]
+    );
+
+    res.json(comments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Get likes count + status
-// =======================
 router.get("/likes/:recordId", authMiddleware, async (req, res) => {
   const recordId = req.params.recordId;
   const userId = req.user.id;
