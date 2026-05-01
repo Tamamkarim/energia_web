@@ -407,11 +407,19 @@ function Dashboard() {
               Avaa tiedosto
             </a>
             {file.mimetype && file.mimetype.startsWith("image/") && (
-              <img
-                src={`https://energia-web-1.onrender.com/${file.file_path.replace("\\", "/")}`}
-                alt={file.original_name}
-                style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
-              />
+              file.file_path && file.file_path.includes("uploads/") ? (
+                <img
+                  src={`https://energia-web-1.onrender.com/${file.file_path}`}
+                  alt={file.original_name}
+                  style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
+                />
+              ) : (
+                <img
+                  src={`https://energia-web-1.onrender.com/uploads/${file.filename}`}
+                  alt={file.original_name}
+                  style={{ maxWidth: "250px", borderRadius: "8px", display: "block", marginTop: "10px" }}
+                />
+              )
             )}
           </div>
         ))}
