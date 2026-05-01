@@ -111,4 +111,51 @@ router.post("/likes", authMiddleware, async (req, res) => {
   }
 });
 
+// Update comment
+router.put("/comments/:commentId", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { commentId } = req.params;
+    const { comment } = req.body;
+
+    if (!comment?.trim()) {
+      return res.status(400).json({ message: "Comment is required" });
+    }
+
+    const [result] = await pool.query(
+      "UPDATE comments SET comment = ? WHERE id = ? AND user_id = ?",
+      [comment, commentId, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    res.json({ message: "Comment updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update comment" });
+  }
+});
+
+// Delete comment
+router.delete("/comments/:commentId", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { commentId } = req.params;
+
+    const [result] = await pool.query(
+      "DELETE FROM comments WHERE id = ? AND user_id = ?",
+      [commentId, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    res.json({ message: "Comment deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete comment" });
+  }
+});
+
 module.exports = router;
