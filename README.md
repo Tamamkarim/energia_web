@@ -83,9 +83,9 @@ Taulut:
 ##  API Dokumentaatio
 
 Lisää:
-https://energia-web-1.onrender.com/apidoc
+https://energia-web-1.onrender.com
 
-(TAI Postman / Swagger linkki)
+
 
 ---
 
