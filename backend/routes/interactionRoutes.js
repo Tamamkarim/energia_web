@@ -22,6 +22,14 @@ router.post("/comments", authMiddleware, async (req, res) => {
       [userId, record_id, comment]
     );
 
+    // Emit new-comment event via socket.io
+    const io = req.app.get("io");
+    io.emit("new-comment", {
+      record_id,
+      comment,
+      user: userId
+    });
+
     res.status(201).json({ message: "Comment added successfully" });
   } catch (error) {
     res.status(500).json({

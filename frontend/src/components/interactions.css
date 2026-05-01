@@ -1,0 +1,34 @@
+.interactions-card {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #cfe8d4;
+  border-radius: 12px;
+  background: #f8fff9;
+}
+
+.like-btn {
+  background: #2f7d32;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 8px;
+}
+
+.comment-item {
+  margin-top: 12px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+}
