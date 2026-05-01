@@ -25,13 +25,13 @@ Backend: https://github.com/Tamamkarim/energia_web
 
 ---
 
-## 🖼️ Kuvakaappaukset
+##  Kuvakaappaukset
 
 ### Tietokanta
 ![Database](./screenshots/db.png)
 
 ### Login API test
-![Login](./screenshots/login.png)
+![Login](./screenshots/api-test-login.png)
 
 ### Testit
 ![Tests](./screenshots/tests.png)
