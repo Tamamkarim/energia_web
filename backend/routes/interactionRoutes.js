@@ -1,3 +1,24 @@
+// Add comment
+router.post("/comments", authMiddleware, async (req, res) => {
+  const userId = req.user.id;
+  const { record_id, comment } = req.body;
+
+  if (!record_id || !comment) {
+    return res.status(400).json({ message: "Record id and comment are required" });
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO comments (user_id, record_id, comment) VALUES (?, ?, ?)",
+      [userId, record_id, comment]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 const express = require("express");
 const router = express.Router();
 const pool = require("../database");
