@@ -1,73 +1,81 @@
-// Comments fetch route (dummy)
-const verifyToken = authMiddleware;
-router.get("/comments/:recordId", verifyToken, async (req, res) => {
-  res.json([]);
-});
 const express = require("express");
 const router = express.Router();
 const pool = require("../database");
 const authMiddleware = require("../middleware/authMiddleware");
 
-// Like/unlike a record
-router.post("/like", authMiddleware, async (req, res) => {
+// =======================
+// Get comments (dummy)
+// =======================
+router.get("/comments/:recordId", authMiddleware, async (req, res) => {
+  res.json([]);
+});
+
+// =======================
+// Get likes count + status
+// =======================
+router.get("/likes/:recordId", authMiddleware, async (req, res) => {
+  const recordId = req.params.recordId;
+  const userId = req.user.id;
+
+  try {
+    const [result] = await pool.query(
+      "SELECT COUNT(*) AS count FROM likes WHERE record_id = ?",
+      [recordId]
+    );
+
+    const [userLike] = await pool.query(
+      "SELECT 1 FROM likes WHERE user_id = ? AND record_id = ?",
+      [userId, recordId]
+    );
+
+    res.json({
+      count: result[0].count,
+      liked: userLike.length > 0,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// =======================
+// Like / Unlike
+// =======================
+router.post("/likes", authMiddleware, async (req, res) => {
   const userId = req.user.id;
   const { record_id } = req.body;
 
-  // Validation: record_id required
   if (!record_id) {
     return res.status(400).json({ message: "Record id is required" });
   }
 
-  // Security: Ensure record belongs to user
-  const [record] = await pool.query(
-    "SELECT * FROM energy_records WHERE id = ? AND user_id = ?",
-    [record_id, userId]
-  );
-  if (record.length === 0) {
-    return res.status(403).json({ message: "Unauthorized access" });
-  }
-
-  // Like/unlike logic
-  const [existing] = await pool.query(
-    "SELECT * FROM likes WHERE user_id = ? AND record_id = ?",
-    [userId, record_id]
-  );
-  if (existing.length > 0) {
-    // Unlike
-    await pool.query(
-      "DELETE FROM likes WHERE user_id = ? AND record_id = ?",
+  try {
+    const [existing] = await pool.query(
+      "SELECT * FROM likes WHERE user_id = ? AND record_id = ?",
       [userId, record_id]
     );
-    return res.json({ liked: false });
-  } else {
-    // Like
+
+    if (existing.length > 0) {
+      await pool.query(
+        "DELETE FROM likes WHERE user_id = ? AND record_id = ?",
+        [userId, record_id]
+      );
+
+      return res.json({ liked: false });
+    }
+
     await pool.query(
       "INSERT INTO likes (user_id, record_id) VALUES (?, ?)",
       [userId, record_id]
     );
-    return res.json({ liked: true });
+
+    res.json({ liked: true });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-});
-
-// Get likes count and user like status
-router.get("/count/:recordId", authMiddleware, async (req, res) => {
-  const recordId = req.params.recordId;
-  const userId = req.user.id;
-
-  // Count likes
-  const [result] = await pool.query(
-    "SELECT COUNT(*) AS count FROM likes WHERE record_id = ?",
-    [recordId]
-  );
-  // Check if user liked
-  const [userLike] = await pool.query(
-    "SELECT 1 FROM likes WHERE user_id = ? AND record_id = ?",
-    [userId, recordId]
-  );
-  res.json({
-    count: result[0].count,
-    liked: userLike.length > 0
-  });
 });
 
 module.exports = router;
