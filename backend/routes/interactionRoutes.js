@@ -3,6 +3,10 @@ const router = express.Router();
 const pool = require("../database");
 const authMiddleware = require("../middleware/authMiddleware");
 
+router.get("/test", (req, res) => {
+  res.json({ message: "Interactions route works" });
+});
+
 // Add comment
 router.post("/comments", authMiddleware, async (req, res) => {
   try {
@@ -26,21 +30,12 @@ router.post("/comments", authMiddleware, async (req, res) => {
     });
   }
 });
-const express = require("express");
-const router = express.Router();
-const pool = require("../database");
-const authMiddleware = require("../middleware/authMiddleware");
-
-router.get("/test", (req, res) => {
-  res.json({ message: "Interactions route works" });
-});
-
 
 // Get comments
 router.get("/comments/:recordId", authMiddleware, async (req, res) => {
-  const recordId = req.params.recordId;
-
   try {
+    const recordId = req.params.recordId;
+
     const [comments] = await pool.query(
       `SELECT c.id, c.comment, c.created_at, u.name
        FROM comments c
@@ -52,17 +47,16 @@ router.get("/comments/:recordId", authMiddleware, async (req, res) => {
 
     res.json(comments);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 // Get likes count + status
 router.get("/likes/:recordId", authMiddleware, async (req, res) => {
-  const recordId = req.params.recordId;
-  const userId = req.user.id;
-
   try {
+    const recordId = req.params.recordId;
+    const userId = req.user.id;
+
     const [result] = await pool.query(
       "SELECT COUNT(*) AS count FROM likes WHERE record_id = ?",
       [recordId]
@@ -77,25 +71,21 @@ router.get("/likes/:recordId", authMiddleware, async (req, res) => {
       count: result[0].count,
       liked: userLike.length > 0,
     });
-
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// =======================
 // Like / Unlike
-// =======================
 router.post("/likes", authMiddleware, async (req, res) => {
-  const userId = req.user.id;
-  const { record_id } = req.body;
-
-  if (!record_id) {
-    return res.status(400).json({ message: "Record id is required" });
-  }
-
   try {
+    const userId = req.user.id;
+    const { record_id } = req.body;
+
+    if (!record_id) {
+      return res.status(400).json({ message: "Record id is required" });
+    }
+
     const [existing] = await pool.query(
       "SELECT * FROM likes WHERE user_id = ? AND record_id = ?",
       [userId, record_id]
@@ -116,9 +106,7 @@ router.post("/likes", authMiddleware, async (req, res) => {
     );
 
     res.json({ liked: true });
-
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
