@@ -35,6 +35,9 @@ Backend: https://github.com/Tamamkarim/energia_web
 
 ### Testit
 ![Tests](./screenshots/tests.png)
+### QR-koodi
+![QR-koodi](./screenshots/qr.png)
+
 
 ---
 
