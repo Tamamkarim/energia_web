@@ -123,7 +123,7 @@ Lisää: https://energia-web-1.onrender.com
 - Tiedoston upload
 - Reaaliaikaisuus (Socket.io)
 - Testit (Jest)
--
+
 
 
 
