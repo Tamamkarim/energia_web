@@ -78,10 +78,7 @@ Helpottaa energiatietojen hallintaa ja analysointia sekä tarjota keskitetty alu
 
 ## Kuvakaappaukset
 
-### Tietokanta
-![Database](./screenshots/db.png)
-![Database](./screenshots/admin.png)
-![Database](./screenshots/data_user.png)
+
 
 ### Login API test
 ![Login](./screenshots/api-test-login.png)
@@ -95,6 +92,9 @@ Helpottaa energiatietojen hallintaa ja analysointia sekä tarjota keskitetty alu
 ---
 
 ## Tietokanta
+Tietokannan rakenne koostuu viidestä päätaulusta: users, energy_records, files, comments ja likes. Users-taulu sisältää käyttäjien tiedot ja roolit. Energy_records-taulu tallentaa käyttäjien energiankulutustiedot. Files-taulu tallentaa käyttäjän lataamat tiedostot, kuten sähkölaskut. Comments- ja likes-taulut mahdollistavat käyttäjien vuorovaikutuksen energiakirjauksiin.
+
+Taulujen välillä käytetään vierasavaimia (FOREIGN KEY), joiden avulla varmistetaan tietojen eheys. Yhdellä käyttäjällä voi olla useita energiakirjauksia ja tiedostoja. Lisäksi yhteen energiakirjaukseen voi liittyä useita kommentteja ja tykkäyksiä.
 
 Taulut:
 - users
@@ -104,6 +104,10 @@ Taulut:
 - energy_records
 
 Lisää ER-kaavio kuva tähän
+![Database](./screenshots/db.png)
+![Database](./screenshots/admin.png)
+![Database](./screenshots/data_user.png)
+
 
 ---
 
