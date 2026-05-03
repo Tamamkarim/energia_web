@@ -1,31 +1,86 @@
-# Projekti Enrgy 
 
-##  Demo
-Frontend: https://tk-web.netlify.app  
-Backend API: https://energia-web-1.onrender.com  
+# Projekti Enrgy – Energiahallintajärjestelmä
 
+Tämä on järjestelmä energiatietojen hallintaan ja analysointiin. Se koostuu kahdesta pääosasta:
 
+## 1. Taustajärjestelmä (Backend)
 
-##  GitHub Repos
+- Rakennettu käyttäen Node.js ja Express.
+- Tarjoaa ohjelmointirajapintoja (API) käyttäjien hallintaan, kirjautumiseen ja rekisteröitymiseen, energiatietojen hallintaan, tiedostojen lataamiseen ja hinnanhallintaan.
+- Yhdistyy tietokantaan MySQL tietojen tallentamista varten.
+- Sisältää middleware-komponentteja käyttöoikeuksien tarkistamiseen sekä controller-moduuleja sovelluslogiikan organisointiin.
 
-Frontend: https://github.com/Tamamkarim/energia_web  
-Backend: https://github.com/Tamamkarim/energia_web  
+### Käytetyt teknologiat (Backend)
+- Node.js
+- Express.js
+- MariaDB railway
+- JWT Auth
+- Multer + Cloudinary
+- Socket.io
 
+## 2. Käyttöliittymä (Frontend)
 
-
-##  Testikäyttäjät
-
-### User
-- email: test@test.com
-- password: 123456
-
-### User 2
-- email: tamam@test.com
-- password: 123456
+- Ohjelmointikieli: JavaScript ja TypeScript
+- Kehys: React.js (Vite)
+- Paketinhallinta: npm
+- Rakennustyökalu: Vite
+- Tyylit ja ulkoasu: CSS
+- Socket.io-client
 
 ---
 
-##  Kuvakaappaukset
+## Demo
+Frontend: https://tk-web.netlify.app  
+Backend API: https://energia-web-1.onrender.com  
+
+## GitHub Repos
+Frontend: https://github.com/Tamamkarim/energia_web  
+Backend: https://github.com/Tamamkarim/energia_web  
+
+## Testikäyttäjät
+
+**User 1**  
+email: test@test.com  
+password: 123456
+
+**User 2**  
+email: tamam@test.com  
+password: 123456
+
+---
+
+## Projektin tavoite
+
+Helpottaa energiatietojen hallintaa ja analysointia sekä tarjota keskitetty alusta käyttäjille ja ylläpitäjille energian kulutuksen, hintojen ja siihen liittyvien raporttien seurantaan.
+
+## Miten projekti toimii?
+
+1. Käyttäjä rekisteröityy tai kirjautuu sisään käyttöliittymän kautta.
+2. Käyttöliittymä lähettää pyyntöjä palvelimelle REST API:n kautta.
+3. Palvelin käsittelee pyynnöt (esim. energiatietojen lisääminen, tiedoston lataus jne.) ja tarkistaa käyttöoikeudet.
+4. Tiedot tallennetaan tietokantaan tai palautetaan käyttöliittymälle.
+5. Käyttöliittymä näyttää tiedot käyttäjälle interaktiivisesti.
+
+## Projektin rakenne
+
+- **backend/**: sisältää palvelinkoodin (server.js), tietokantamallit, controllerit, reitit ja middlewaret
+- **frontend/**: sisältää käyttöliittymäkoodin, sivut, komponentit, palvelut ja asetustiedostot
+
+---
+
+## Sovelluksen keskeiset toiminnot
+
+- Käyttäjien rekisteröinti ja kirjautuminen (roolit: ylläpitäjä/käyttäjä)
+- Energian kulutuksen seuranta ja analysointi
+- Tiedostojen lataus ja hallinta
+- Hintatietojen hallinta
+- Reaaliaikainen data (Socket.io)
+- Admin-toiminnot (jos käyttäjä on ylläpitäjä)
+- Testit (Jest)
+
+---
+
+## Kuvakaappaukset
 
 ### Tietokanta
 ![Database](./screenshots/db.png)
@@ -35,38 +90,13 @@ Backend: https://github.com/Tamamkarim/energia_web
 
 ### Testit
 ![Tests](./screenshots/tests.png)
+
 ### QR-koodi
 ![QR-koodi](./screenshots/qr.png)
 
-
 ---
 
-##  Sovelluksen kuvaus
-
-Projekti Enrgy on energian kulutuksen seurantajärjestelmä, jossa käyttäjät voivat:
-- kirjautua sisään
-- seurata energiankulutusta
-- tallentaa tiedostoja
-- käyttää reaaliaikaista dataa
-
-
-##  Teknologiat
-
-### Backend
-- Node.js
-- Express
-- MariaDB / SQLite
-- JWT Auth
-- Multer + Cloudinary
-- Socket.io
-
-### Frontend
-- React (Vite)
-- Socket.io-client
-
-
-
-##  Tietokanta
+## Tietokanta
 
 Taulut:
 - users
@@ -75,28 +105,25 @@ Taulut:
 - likes
 - energy_records
 
- Lisää ER-kaavio kuva tähän
+Lisää ER-kaavio kuva tähän
 
+---
 
+## API Dokumentaatio
 
-##  API Dokumentaatio
+Lisää: https://energia-web-1.onrender.com
 
-Lisää:
-https://energia-web-1.onrender.com
+---
 
-
-
-
-
-##  Toiminnallisuudet
+## Toiminnallisuudet
 
 - Rekisteröinti
 - Kirjautuminen (JWT)
 - Energian seuranta
--  Admin-toiminnot (jos on)
 - Tiedoston upload
 - Reaaliaikaisuus (Socket.io)
 - Testit (Jest)
+-
 
 
 
