@@ -80,6 +80,8 @@ Helpottaa energiatietojen hallintaa ja analysointia sekä tarjota keskitetty alu
 
 ### Tietokanta
 ![Database](./screenshots/db.png)
+![Database](./screenshots/admin.png)
+![Database](./screenshots/data_user.png)
 
 ### Login API test
 ![Login](./screenshots/api-test-login.png)
