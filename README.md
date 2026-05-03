@@ -39,13 +39,9 @@ Backend: https://github.com/Tamamkarim/energia_web
 
 ## Testikäyttäjät
 
-**User 1**  
-email: test@test.com  
-password: 123456
-
-**User 2**  
-email: tamam@test.com  
-password: 123456
+Admin
+tamamk@gmail.com
+1988218
 
 ---
 
