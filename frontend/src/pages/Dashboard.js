@@ -74,13 +74,7 @@ function Dashboard() {
       fetchFiles();
       fetchElectricityPrice();
     }, []);
-  const [records, setRecords] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [form, setForm] = useState({
-    consumption: "",
-    date: "",
-    notes: "",
-  });
+  // تم حذف التكرار هنا
   // Loading state
   const [loading, setLoading] = useState(true);
   // Electricity price state
