@@ -4,7 +4,7 @@ const {
   getEnergyRecords,
   deleteEnergyRecord,
   updateEnergyRecord,
-} = require("../controllers/energyController");
+} = require("../controllers/energyController"); // تأكد أن اسم الملف مطابق تمامًا
 
 const verifyToken = require("../middleware/authMiddleware");
 
