@@ -34,16 +34,16 @@ const getEnergyRecords = async (req, res) => {
   } catch (error) {
     console.error("ENERGY ERROR:", error);
     res.status(500).json({ message: "Failed to get energy records", error: error.message });
-  }
+          const { consumption, date, notes, category } = req.body;
 };
 
 const deleteEnergyRecord = async (req, res) => {
   try {
     const userId = req.user.id;
-    const recordId = req.params.id;
-
-    const [result] = await pool.query(
-      "DELETE FROM energy_records WHERE id = ? AND user_id = ?",
+          await pool.query(
+            "INSERT INTO energy_records (user_id, consumption, date, notes, category) VALUES (?, ?, ?, ?, ?)",
+            [userId, consumption, date, notes || null, category || "electricity"]
+          );
       [recordId, userId]
     );
 

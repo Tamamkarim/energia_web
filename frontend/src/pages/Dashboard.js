@@ -38,23 +38,30 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, ArcEle
 
 
 function Dashboard() {
-  // ...existing code...
 
-  // ضع الدالة هنا مباشرة بعد useState
   // File search state
   const [fileSearch, setFileSearch] = useState("");
+
+  const [records, setRecords] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [form, setForm] = useState({
+    consumption: "",
+    date: "",
+    notes: "",
+    category: "electricity",
+  });
+
+  // Handle add energy record
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await API.post("/energy", form);
-
       setForm({
         consumption: "",
         date: "",
         notes: "",
+        category: "electricity",
       });
-
       fetchRecords();
     } catch (error) {
       alert("Tietojen lisääminen epäonnistui");
@@ -91,6 +98,17 @@ function Dashboard() {
   const [files, setFiles] = useState([]);
   // Fetch uploaded files
   const fetchFiles = async () => {
+          <select
+            style={styles.input}
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+          >
+            <option value="electricity">Sähkö</option>
+            <option value="heating">Lämpö</option>
+            <option value="water">Vesi</option>
+            <option value="waste">Jäte</option>
+            <option value="other">Muu</option>
+          </select>
     try {
       const res = await API.get("/files");
       setFiles(res.data);
@@ -268,6 +286,24 @@ function Dashboard() {
     ],
   };
   // --- getComparison function ---
+
+  // --- Energiankulutuksen jakautuminen lähteittäin ---
+  const sourceData = {
+    labels: ["Sähkö", "Lämpö", "Vesi", "Jäte", "Muu"],
+    datasets: [
+      {
+        label: "Energiankulutus",
+        data: [
+          totalConsumption * 0.45,
+          totalConsumption * 0.25,
+          totalConsumption * 0.15,
+          totalConsumption * 0.10,
+          totalConsumption * 0.05,
+        ],
+        backgroundColor: ["#66e38b", "#64b5f6", "#ffd54f", "#ba68c8", "#ef6c63"],
+      },
+    ],
+  };
   const getComparison = () => {
     if (sortedRecords.length < 2) {
       return "Ei tarpeeksi tietoja vertailuun.";
@@ -516,9 +552,15 @@ function Dashboard() {
         <Bar data={chartData} />
       </div>
 
+
       <div style={styles.chartBox}>
         <h3>Energiankäyttö</h3>
         <Pie data={peakData} />
+      </div>
+
+      <div style={styles.chartBox}>
+        <h3>Energiankulutuksen jakautuminen lähteittäin</h3>
+        <Pie data={sourceData} />
       </div>
 
       <div style={{ margin: "20px 0", fontWeight: "bold", color: "#1976d2" }}>
